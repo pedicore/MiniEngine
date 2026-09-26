@@ -7,7 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(MiniEngine
     src/main.cpp
+    src/Engine.cpp
 )
-find_package(SDL2 REQUIRED)
-target_link_libraries(MiniEngine PRIVATE SDL2::SDL2)
 
+target_include_directories(MiniEngine PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+find_package(SDL2 REQUIRED)
+
+target_link_libraries(MiniEngine PRIVATE
+    SDL2::SDL2
+)
