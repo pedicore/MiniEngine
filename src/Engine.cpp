@@ -1,22 +1,27 @@
 #include "Engine.h"
 #include <iostream>
 
-using namespace std;
+Engine::Engine()
+    : player(100.0f, 100.0f, 300.0f)
+{
+}
 
-
+Engine::~Engine()
+{
+    clean();
+}
 
 bool Engine::init()
 {
-    // SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        cout << SDL_GetError() << '\n';
+        std::cout << "SDL Init Error: "
+                  << SDL_GetError() << '\n';
         return false;
     }
 
-    // Window
     window = SDL_CreateWindow(
-        "Mini Engine",
+        "MiniEngine",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
@@ -24,51 +29,32 @@ bool Engine::init()
         SDL_WINDOW_SHOWN
     );
 
-    if (window == nullptr)
+    if (!window)
     {
-        cout << SDL_GetError() << '\n';
-        SDL_Quit();
+        std::cout << "Window Error: "
+                  << SDL_GetError() << '\n';
+        clean();
         return false;
     }
 
-    // Renderer
     renderer = SDL_CreateRenderer(
         window,
         -1,
         SDL_RENDERER_ACCELERATED
     );
 
-    if (renderer == nullptr)
+    if (!renderer)
     {
-        cout << SDL_GetError() << '\n';
-
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-
+        std::cout << "Renderer Error: "
+                  << SDL_GetError() << '\n';
+        clean();
         return false;
     }
 
-    // Rectangle
-    x = 100.0f;
-    y = 150.0f;
-    speed = 200.0f;
-
-    rect.x = 100;
-    rect.y = 150;
-    rect.w = 200;
-    rect.h = 100;
-
-    // Time
+    running = true;
     lastTime = SDL_GetTicks();
 
-    running = true;
-
     return true;
-}
-
-bool Engine::isRunning() const
-{
-    return running;
 }
 
 void Engine::handleEvents()
@@ -88,82 +74,75 @@ void Engine::update()
 {
     // Delta Time
     Uint32 currentTime = SDL_GetTicks();
-    Uint32 deltaTime = currentTime - lastTime;
+
+    float deltaTime =
+        (currentTime - lastTime) / 1000.0f;
+
     lastTime = currentTime;
 
-    float deltaSeconds = deltaTime / 1000.0f;
+    // Read keyboard
+    const Uint8* keyboardState =
+        SDL_GetKeyboardState(nullptr);
 
-    // Keyboard
-    const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
+    input.moveRight =
+        keyboardState[SDL_SCANCODE_RIGHT];
 
-    if (keyboardState[SDL_SCANCODE_RIGHT])
-    {
-        x += speed * deltaSeconds;
-    }
+    input.moveLeft =
+        keyboardState[SDL_SCANCODE_LEFT];
 
-    if (keyboardState[SDL_SCANCODE_LEFT])
-    {
-        x -= speed * deltaSeconds;
-    }
+    input.moveUp =
+        keyboardState[SDL_SCANCODE_UP];
 
-    if (keyboardState[SDL_SCANCODE_UP])
-    {
-        y -= speed * deltaSeconds;
-    }
+    input.moveDown =
+        keyboardState[SDL_SCANCODE_DOWN];
 
-    if (keyboardState[SDL_SCANCODE_DOWN])
-    {
-        y += speed * deltaSeconds;
-    }
-
-    // Window boundaries
-    if (x < 0)
-    x = 0;
-
-    if (x > WINDOW_WIDTH - rect.w)
-        x = WINDOW_WIDTH - rect.w;
-
-    if (y < 0)
-        y = 0;
-
-    if (y > WINDOW_HEIGHT - rect.h)
-        y = WINDOW_HEIGHT - rect.h;
-
-    // float position -> SDL_Rect position
-    rect.x = static_cast<int>(x);
-    rect.y = static_cast<int>(y);
+    // Update Player
+    player.update(
+        deltaTime,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        input
+    );
 }
 
 void Engine::render()
 {
-    // Background
-    SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
+    SDL_SetRenderDrawColor(
+        renderer,
+        20, 20, 20, 255
+    );
+
     SDL_RenderClear(renderer);
 
-    // Rectangle
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_SetRenderDrawColor(
+        renderer,
+        255, 255, 255, 255
+    );
 
-    // Show frame
+    player.render(renderer);
+
     SDL_RenderPresent(renderer);
+}
+
+bool Engine::isRunning() const
+{
+    return running;
 }
 
 void Engine::clean()
 {
-    
-    
-    SDL_DestroyRenderer(renderer);
-    renderer = nullptr;
+    if (renderer)
+    {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
 
-    SDL_DestroyWindow(window);
-    window = nullptr;
+    if (window)
+    {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
 
     SDL_Quit();
-
     running = false;
-    
-}
-Engine::~Engine()
-{
-    clean();
 }

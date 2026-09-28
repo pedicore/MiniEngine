@@ -1,34 +1,34 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "Player.h"
+#include "InputState.h"
 
 class Engine
 {
 private:
-    private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
     bool running = false;
 
-
     static constexpr int WINDOW_WIDTH = 800;
     static constexpr int WINDOW_HEIGHT = 600;
 
-    SDL_Rect rect;
+    Uint32 lastTime = 0;
 
-    float x;
-    float y;
-    float speed;
+    Player player;
+    InputState input;
 
-    Uint32 lastTime;
     void clean();
+
 public:
+    Engine();
+    ~Engine();
+
     bool init();
     void handleEvents();
     void update();
     void render();
-    
 
     bool isRunning() const;
-    ~Engine();
 };
