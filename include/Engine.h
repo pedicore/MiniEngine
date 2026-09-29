@@ -1,14 +1,18 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <memory>
+
 #include "Player.h"
 #include "InputState.h"
+#include "TextureManager.h"
 
 class Engine
 {
 private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
+
     bool running = false;
 
     static constexpr int WINDOW_WIDTH = 800;
@@ -16,8 +20,11 @@ private:
 
     Uint32 lastTime = 0;
 
-    Player player;
     InputState input;
+
+    TextureManager textureManager;
+
+    std::unique_ptr<Player> player;
 
     void clean();
 
@@ -26,6 +33,7 @@ public:
     ~Engine();
 
     bool init();
+
     void handleEvents();
     void update();
     void render();

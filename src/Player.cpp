@@ -1,14 +1,20 @@
 #include "Player.h"
 
-Player::Player(float startX, float startY, float moveSpeed)
+Player::Player(
+    float startX,
+    float startY,
+    float moveSpeed,
+    SDL_Texture* playerTexture
+)
     : x(startX),
       y(startY),
-      speed(moveSpeed)
+      speed(moveSpeed),
+      texture(playerTexture)
 {
     rect.x = static_cast<int>(x);
     rect.y = static_cast<int>(y);
-    rect.w = 50;
-    rect.h = 50;
+    rect.w = 64;
+    rect.h = 64;
 }
 
 void Player::update(
@@ -30,7 +36,6 @@ void Player::update(
     if (input.moveDown)
         y += speed * deltaTime;
 
-    // Window boundaries
     if (x < 0)
         x = 0;
 
@@ -49,5 +54,13 @@ void Player::update(
 
 void Player::render(SDL_Renderer* renderer)
 {
-    SDL_RenderFillRect(renderer, &rect);
+    if (texture)
+    {
+        SDL_RenderCopy(
+            renderer,
+            texture,
+            nullptr,
+            &rect
+        );
+    }
 }

@@ -2,7 +2,6 @@
 #include <iostream>
 
 Engine::Engine()
-    : player(100.0f, 100.0f, 300.0f)
 {
 }
 
@@ -17,6 +16,7 @@ bool Engine::init()
     {
         std::cout << "SDL Init Error: "
                   << SDL_GetError() << '\n';
+
         return false;
     }
 
@@ -33,6 +33,7 @@ bool Engine::init()
     {
         std::cout << "Window Error: "
                   << SDL_GetError() << '\n';
+
         clean();
         return false;
     }
@@ -47,9 +48,29 @@ bool Engine::init()
     {
         std::cout << "Renderer Error: "
                   << SDL_GetError() << '\n';
+
         clean();
         return false;
     }
+
+    // Load Player Texture
+    if (!textureManager.load(
+            renderer,
+            "player",
+            "assets/player.bmp"
+        ))
+    {
+        clean();
+        return false;
+    }
+
+    // Create Player after Texture exists
+    player = std::make_unique<Player>(
+        100.0f,
+        100.0f,
+        300.0f,
+        textureManager.get("player")
+    );
 
     running = true;
     lastTime = SDL_GetTicks();
@@ -72,7 +93,6 @@ void Engine::handleEvents()
 
 void Engine::update()
 {
-    // Delta Time
     Uint32 currentTime = SDL_GetTicks();
 
     float deltaTime =
@@ -80,7 +100,6 @@ void Engine::update()
 
     lastTime = currentTime;
 
-    // Read keyboard
     const Uint8* keyboardState =
         SDL_GetKeyboardState(nullptr);
 
@@ -96,13 +115,15 @@ void Engine::update()
     input.moveDown =
         keyboardState[SDL_SCANCODE_DOWN];
 
-    // Update Player
-    player.update(
-        deltaTime,
-        WINDOW_WIDTH,
-        WINDOW_HEIGHT,
-        input
-    );
+    if (player)
+    {
+        player->update(
+            deltaTime,
+            WINDOW_WIDTH,
+            WINDOW_HEIGHT,
+            input
+        );
+    }
 }
 
 void Engine::render()
@@ -114,12 +135,10 @@ void Engine::render()
 
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(
-        renderer,
-        255, 255, 255, 255
-    );
-
-    player.render(renderer);
+    if (player)
+    {
+        player->render(renderer);
+    }
 
     SDL_RenderPresent(renderer);
 }
@@ -131,6 +150,13 @@ bool Engine::isRunning() const
 
 void Engine::clean()
 {
+    // Player uses the texture,
+    // so destroy Player first.
+    player.reset();
+
+    // Then destroy textures.
+    textureManager.clear();
+
     if (renderer)
     {
         SDL_DestroyRenderer(renderer);
@@ -144,5 +170,6 @@ void Engine::clean()
     }
 
     SDL_Quit();
+
     running = false;
 }
