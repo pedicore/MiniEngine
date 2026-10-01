@@ -6,7 +6,7 @@ Enemy::Enemy(
     int startX,
     int startY,
     SDL_Texture* enemyTexture
-)
+)   
 :texture(enemyTexture)
 
 {
@@ -26,8 +26,18 @@ Enemy::Enemy(
    &textureHeight
 
    );
+    sourceRect.x = 0;
+    sourceRect.y = 0;
+    sourceRect.w = textureWidth / 4;
+    sourceRect.h = textureHeight;
+
     rect.w = textureWidth;
     rect.h = textureHeight;
+    //temp
+       
+
+        sourceRect.x =
+        currentFrame * sourceRect.w;
 }
 
 void Enemy::render(SDL_Renderer* renderer)
@@ -37,15 +47,30 @@ void Enemy::render(SDL_Renderer* renderer)
         SDL_RenderCopy(
             renderer,
             texture,
-            nullptr,
+            &sourceRect,
             &rect
         );
     }
-    
-
-
-
 
 }
 
+void Enemy::update(float deltaTime)
+{
+    animationTimer += deltaTime;
 
+    if (animationTimer >= frameDuration)
+    {
+        animationTimer -= frameDuration;
+        animationTimer = 0.0f;
+
+        currentFrame++;
+
+        if (currentFrame >= frameCount)
+        {
+            currentFrame = 0;
+        }
+
+        sourceRect.x =
+            currentFrame * sourceRect.w;
+    }
+}

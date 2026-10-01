@@ -67,7 +67,7 @@ bool Engine::init()
     if (!textureManager.load(
             renderer,
             "enemy",
-            "assets/enemy.bmp"
+            "assets/enemy_sheet.bmp"
         ))
     {
         clean();
@@ -148,6 +148,13 @@ void Engine::update()
             input
         );
     }
+    // Update
+    for (auto& enemy : enemies)
+    {
+        enemy->update(deltaTime);
+    }
+
+    
 }
 
 void Engine::render()
