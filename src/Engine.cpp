@@ -64,6 +64,16 @@ bool Engine::init()
         return false;
     }
 
+    if (!textureManager.load(
+            renderer,
+            "enemy",
+            "assets/enemy.bmp"
+        ))
+    {
+        clean();
+        return false;
+    }
+
     // Create Player after Texture exists
     player = std::make_unique<Player>(
         100.0f,
@@ -71,7 +81,21 @@ bool Engine::init()
         300.0f,
         textureManager.get("player")
     );
+    enemies.push_back(
+        std::make_unique<Enemy>(
+            500,
+            200,
+            textureManager.get("enemy")
+        )
+    );
 
+    enemies.push_back(
+        std::make_unique<Enemy>(
+            300,
+            350,
+            textureManager.get("enemy")
+        )
+    );
     running = true;
     lastTime = SDL_GetTicks();
 
@@ -139,7 +163,11 @@ void Engine::render()
     {
         player->render(renderer);
     }
-
+    for (auto& enemy : enemies)
+    {
+        enemy->render(renderer);
+    }
+    
     SDL_RenderPresent(renderer);
 }
 
@@ -150,11 +178,9 @@ bool Engine::isRunning() const
 
 void Engine::clean()
 {
-    // Player uses the texture,
-    // so destroy Player first.
+    enemies.clear();
     player.reset();
 
-    // Then destroy textures.
     textureManager.clear();
 
     if (renderer)
@@ -170,6 +196,5 @@ void Engine::clean()
     }
 
     SDL_Quit();
-
     running = false;
 }

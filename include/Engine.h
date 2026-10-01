@@ -2,8 +2,9 @@
 
 #include <SDL2/SDL.h>
 #include <memory>
-
+#include <vector>
 #include "Player.h"
+#include "Enemy.h"
 #include "InputState.h"
 #include "TextureManager.h"
 
@@ -25,6 +26,7 @@ private:
     TextureManager textureManager;
 
     std::unique_ptr<Player> player;
+    std::vector<std::unique_ptr<Enemy>> enemies;
 
     void clean();
 

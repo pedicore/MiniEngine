@@ -11,7 +11,7 @@ private:
     float x;
     float y;
     float speed;
-
+    float scale = 1.0f;
     SDL_Texture* texture = nullptr;
 
 public:

@@ -10,6 +10,7 @@ add_executable(MiniEngine
     src/Engine.cpp
     src/Player.cpp
     src/TextureManager.cpp
+    src/Enemy.cpp
 )
 
 target_include_directories(MiniEngine PRIVATE

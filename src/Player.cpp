@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include <iostream>
 Player::Player(
     float startX,
     float startY,
@@ -13,8 +13,33 @@ Player::Player(
 {
     rect.x = static_cast<int>(x);
     rect.y = static_cast<int>(y);
-    rect.w = 64;
-    rect.h = 64;
+    int textureWidth = 0;
+    int textureHeight = 0;
+    if (texture == nullptr)
+    {
+        std::cout << "Player texture is null\n";
+        rect.w = 0;
+        rect.h = 0;
+        return;
+    }
+  if (SDL_QueryTexture(
+        texture,
+        nullptr,
+        nullptr,
+        &textureWidth,
+        &textureHeight
+    ) != 0)
+{
+    std::cout << "Failed to query texture: "
+              << SDL_GetError() << '\n';
+}
+
+    std::cout << textureWidth << " x "
+              << textureHeight << '\n';
+    
+    rect.w = static_cast<int>(textureWidth * scale);
+    rect.h = static_cast<int>(textureHeight * scale);
+
 }
 
 void Player::update(
