@@ -81,11 +81,24 @@ bool Engine::init()
         300.0f,
         textureManager.get("player")
     );
+
+
+    // get the texture first!
+
+
+    SDL_Texture*  enemyTexture = textureManager.get("enemy");
+    if (enemyTexture == nullptr)
+    {
+        std::cout << "Enemy texture not found!\n";
+        clean();
+        return false;
+    }
     enemies.push_back(
         std::make_unique<Enemy>(
             500,
             200,
-            textureManager.get("enemy")
+            enemyTexture , 
+            0.15f
         )
     );
 
@@ -93,7 +106,8 @@ bool Engine::init()
         std::make_unique<Enemy>(
             300,
             350,
-            textureManager.get("enemy")
+            enemyTexture , 
+            0.30f
         )
     );
     running = true;

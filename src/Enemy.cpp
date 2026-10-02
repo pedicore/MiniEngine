@@ -5,11 +5,17 @@ Enemy::Enemy(
 
     int startX,
     int startY,
-    SDL_Texture* enemyTexture
+    SDL_Texture* enemyTexture,
+    float animationSpeed
 )   
-:texture(enemyTexture)
+:texture(enemyTexture) , frameDuration(animationSpeed)
 
 {
+    if (frameDuration <= 0.0f)
+    {
+        frameDuration = 0.15f;
+    }
+    
     rect.x = startY ; 
     rect.y = startX ; 
     //texture
@@ -28,8 +34,9 @@ Enemy::Enemy(
    );
     sourceRect.x = 0;
     sourceRect.y = 0;
-    sourceRect.w = textureWidth / 4;
+    sourceRect.w = textureWidth / frameCount;
     sourceRect.h = textureHeight;
+
 
     rect.w = textureWidth;
     rect.h = textureHeight;
