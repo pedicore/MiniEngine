@@ -2,15 +2,16 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <string.h>
+#include "GameObject.h"
 
 
-class Enemy {
+class Enemy: public GameObject {
 
 private:
 
-SDL_Rect rect;
+
 SDL_Rect sourceRect;
-SDL_Texture* texture = nullptr;
+
 int currentFrame = 0;
 float animationTimer = 0.0f;
 float frameDuration = 0.15f;
@@ -28,7 +29,7 @@ Enemy(
 );
 
 
-void render(SDL_Renderer* renderer);
+void render(SDL_Renderer* renderer) override;
 void update(float deltaTime);
 
 };

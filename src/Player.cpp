@@ -6,10 +6,10 @@ Player::Player(
     float moveSpeed,
     SDL_Texture* playerTexture
 )
-    : x(startX),
-      y(startY),
-      speed(moveSpeed),
-      texture(playerTexture)
+    :GameObject(playerTexture),
+        x(startX),
+        y(startY),
+        speed(moveSpeed)
 {
     rect.x = static_cast<int>(x);
     rect.y = static_cast<int>(y);

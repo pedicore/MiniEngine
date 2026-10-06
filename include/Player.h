@@ -2,17 +2,17 @@
 
 #include <SDL2/SDL.h>
 #include "InputState.h"
-
-class Player
+#include "GameObject.h"
+class Player: public GameObject
 {
 private:
-    SDL_Rect rect;
+    
 
     float x;
     float y;
     float speed;
     float scale = 1.0f;
-    SDL_Texture* texture = nullptr;
+    
 
 public:
     Player(
@@ -29,5 +29,5 @@ public:
         const InputState& input
     );
 
-    void render(SDL_Renderer* renderer);
+    void render(SDL_Renderer* renderer) override;
 };

@@ -8,7 +8,7 @@ Enemy::Enemy(
     SDL_Texture* enemyTexture,
     float animationSpeed
 )   
-:texture(enemyTexture) , frameDuration(animationSpeed)
+:GameObject(enemyTexture), frameDuration(animationSpeed)
 
 {
     if (frameDuration <= 0.0f)
