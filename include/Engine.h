@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "InputState.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 
 class Engine
 {
@@ -27,6 +28,8 @@ private:
 
     std::unique_ptr<Player> player;
     std::vector<std::unique_ptr<Enemy>> enemies;
+
+    std::vector<GameObject*> objects;
 
     void clean();
 

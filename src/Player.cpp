@@ -89,3 +89,23 @@ void Player::render(SDL_Renderer* renderer)
         );
     }
 }
+void Player::update(float deltaTime)
+{
+    update(
+        deltaTime,
+        currentWindowWidth,
+        currentWindowHeight,
+        currentInput
+    );
+}
+
+void Player::setInput(
+    const InputState& newInput,
+    int width,
+    int height
+)
+{
+    currentInput = newInput;
+    currentWindowWidth = width;
+    currentWindowHeight = height;
+}

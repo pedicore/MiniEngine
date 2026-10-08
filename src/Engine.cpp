@@ -110,10 +110,16 @@ bool Engine::init()
             0.30f
         )
     );
+    objects.push_back(player.get());
+    for (auto& enemy : enemies)
+    {
+        objects.push_back(enemy.get());
+    }
     running = true;
     lastTime = SDL_GetTicks();
 
     return true;
+
 }
 
 void Engine::handleEvents()
@@ -153,20 +159,19 @@ void Engine::update()
     input.moveDown =
         keyboardState[SDL_SCANCODE_DOWN];
 
-    if (player)
-    {
-        player->update(
-            deltaTime,
-            WINDOW_WIDTH,
-            WINDOW_HEIGHT,
-            input
-        );
-    }
-    // Update
-    for (auto& enemy : enemies)
-    {
-        enemy->update(deltaTime);
-    }
+if (player)
+{
+    player->setInput(
+        input,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT
+    );
+}
+
+for (GameObject* object : objects)
+{
+    object->update(deltaTime);
+}
 
     
 }
@@ -180,13 +185,9 @@ void Engine::render()
 
     SDL_RenderClear(renderer);
 
-    if (player)
+    for (GameObject* object : objects)
     {
-        player->render(renderer);
-    }
-    for (auto& enemy : enemies)
-    {
-        enemy->render(renderer);
+        object->render(renderer);
     }
     
     SDL_RenderPresent(renderer);
@@ -199,6 +200,7 @@ bool Engine::isRunning() const
 
 void Engine::clean()
 {
+    objects.clear();
     enemies.clear();
     player.reset();
 

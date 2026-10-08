@@ -12,6 +12,9 @@ private:
     float y;
     float speed;
     float scale = 1.0f;
+    InputState currentInput{};
+    int currentWindowWidth = 0;
+    int currentWindowHeight = 0;
     
 
 public:
@@ -29,5 +32,11 @@ public:
         const InputState& input
     );
 
+    void setInput(
+    const InputState& newInput,
+    int width,
+    int height
+    );
+    void update(float deltaTime) override;
     void render(SDL_Renderer* renderer) override;
 };

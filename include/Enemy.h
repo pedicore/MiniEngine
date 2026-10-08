@@ -30,6 +30,6 @@ Enemy(
 
 
 void render(SDL_Renderer* renderer) override;
-void update(float deltaTime);
+void update(float deltaTime) override;
 
 };
