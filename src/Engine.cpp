@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include <iostream>
+#include "Collision.h"
 
 Engine::Engine()
 {
@@ -167,13 +168,36 @@ if (player)
         WINDOW_HEIGHT
     );
 }
-
+bool isColliding = false;
 for (GameObject* object : objects)
 {
     object->update(deltaTime);
 }
 
-    
+if (player)
+{
+    for (auto& enemy : enemies)
+    {
+        if (checkCollision(player->getRect() , enemy->getRect()))
+        {
+            isColliding = true;
+            
+        }
+    }
+            
+    if (isColliding && !wasColliding)
+    {
+           
+     std::cout << "Collision detected!\n";
+    }
+    if (!isColliding && wasColliding)
+        {
+            
+        std::cout << "Collision ended!\n";
+        }
+        
+    }
+wasColliding = isColliding;
 }
 
 void Engine::render()

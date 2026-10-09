@@ -15,6 +15,8 @@ private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
+    bool wasColliding = false;
+
     bool running = false;
 
     static constexpr int WINDOW_WIDTH = 800;
