@@ -16,6 +16,8 @@ private:
     SDL_Renderer* renderer = nullptr;
 
     bool wasColliding = false;
+    std::vector<bool> previousCollisions;
+    
 
     bool running = false;
 

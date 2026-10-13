@@ -111,6 +111,11 @@ bool Engine::init()
             0.30f
         )
     );
+
+
+    previousCollisions.resize(enemies.size(), false);
+
+    
     objects.push_back(player.get());
     for (auto& enemy : enemies)
     {
@@ -176,30 +181,29 @@ for (GameObject* object : objects)
 
 if (player)
 {
-    for (auto& enemy : enemies)
+    for (size_t i = 0; i < enemies.size(); i++)
     {
-        if (checkCollision(player->getRect() , enemy->getRect()))
-        {
-            isColliding = true;
-            
-        }
-    }
-            
-    if (isColliding && !wasColliding)
-    {
-           
-     std::cout << "Collision detected!\n";
-    }
-    if (!isColliding && wasColliding)
-        {
-            
-        std::cout << "Collision ended!\n";
-        }
-        
-    }
-wasColliding = isColliding;
-}
+        bool isColliding = checkCollision(
+            player->getRect(),
+            enemies[i]->getRect()
+        );
 
+        if (isColliding && !previousCollisions[i])
+        {
+            std::cout << "Enemy " << i
+                      << ": Collision started!\n";
+        }
+
+        else if (!isColliding && previousCollisions[i])
+        {
+            std::cout << "Enemy " << i
+                    << ": Collision ended!\n";
+        }
+
+        previousCollisions[i] = isColliding;
+    }
+}
+}
 void Engine::render()
 {
     SDL_SetRenderDrawColor(
