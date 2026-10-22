@@ -71,6 +71,4 @@ Playable educational project. Core gameplay features have been tested on Windows
 
 This project helped me practice object-oriented programming, smart pointers, resource ownership, SDL2 rendering, delta-time movement, collision detection, debugging, and organizing a C++ project with CMake.
 
-## Gameplay Screenshot
 
-![MiniEngine Gameplay](screenshots/gameplay.png)
