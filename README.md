@@ -52,3 +52,7 @@ Add a real screenshot or short GIF after running the game locally. Do not fabric
 
 ## Learning note
 This is a consolidated reference implementation. Before using it as portfolio evidence, read each class, build it locally, test all controls, and record the changes you personally make in genuine Git commits.
+
+## Gameplay Screenshot
+
+![MiniEngine Gameplay](screenshots/gameplay.png)
