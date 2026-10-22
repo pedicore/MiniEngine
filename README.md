@@ -1,57 +1,75 @@
-# MiniEngine — C++17 / SDL2
+# MiniEngine — 2D Space Shooter
 
-A compact 2D arcade shooter based on a learning project, designed to demonstrate a clean SDL2 game loop, object-oriented design, sprite-sheet animation, input, AABB collision, RAII, and resource management.
+A small 2D arcade space shooter developed with **C++17 and SDL2**, featuring a modular object-oriented architecture.
 
 ## Features
-- Player movement with **Arrow keys** or **WASD**
-- Shoot with **Space** (one shot per press)
-- Animated enemies that bounce at screen edges
-- Two waves, scoring, three lives, win/game-over states
-- **R** to restart, **Esc** to quit
-- Optional developer controls: **N** adds an enemy, **M** removes the last enemy
-- Window title displays score, lives, wave, and end-state instructions
 
-## Build
-Requires a C++17 compiler, CMake >= 3.16, and **SDL2 development libraries**.
+- Player movement using keyboard controls
+- Enemy spawning and sprite-sheet animations
+- Player shooting mechanics
+- AABB collision detection
+- Score and lives tracking
+- Wave-based gameplay
+- Win and game-over states
+- Game restart functionality
+- Delta-time-based movement
+- Texture caching and resource management
 
-### Windows (vcpkg + Visual Studio toolchain)
+## Controls
+
+| Key | Action |
+|---|---|
+| Arrow Keys | Move the player |
+| Space | Shoot |
+| R | Restart the game |
+| Esc | Quit |
+
+## Screenshot
+
+![MiniEngine Gameplay](screenshots/gameplay.png)
+
+## Technologies
+
+- C++17
+- SDL2
+- CMake
+- MinGW-w64 / MSYS2
+- Git and GitHub
+
+## Project Architecture
+
+- **Engine:** Initializes SDL2, manages the game loop, events, game states, and rendering.
+- **GameObject:** Abstract base class for game entities.
+- **Player:** Handles player movement and rendering.
+- **Enemy:** Handles enemy movement, animation, and rendering.
+- **TextureManager:** Loads, caches, and releases textures.
+- **Collision:** Provides AABB collision detection.
+
+## Build Instructions (Windows / MSYS2 UCRT64)
+
+Requirements: CMake, MinGW-w64 C++ compiler, and SDL2 development libraries.
+
 ```powershell
-vcpkg install sdl2:x64-windows
-cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE="C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake"
-cmake --build build --config Release
-```
-Run `build/Release/MiniEngine.exe` from a terminal (the build copies `assets/` next to the executable).
-
-### Linux
-```bash
-sudo apt install libsdl2-dev cmake g++
-cmake -S . -B build
+cmake -S . -B build -G "MinGW Makefiles"
 cmake --build build
-./build/MiniEngine
+.\build\MiniEngine.exe
 ```
 
-## Architecture
-- `Engine`: owns the SDL window/renderer, controls state, wave spawning, bullets, collisions, and game loop.
-- `GameObject`: abstract base class with virtual `update` and `render`.
-- `Player`: frame-independent movement and input.
-- `Enemy`: sprite-sheet animation and horizontal movement.
-- `TextureManager`: caches textures and destroys them during cleanup.
-- `Collision.h`: AABB intersection helper.
+Make sure the MSYS2 UCRT64 toolchain and SDL2 libraries are installed and available to CMake.
 
-`std::unique_ptr` owns Player and Enemy objects. SDL textures are owned by `TextureManager`, not by individual game objects. Bullets are lightweight value objects stored in a vector.
+## Known Limitations
 
-## Limitations / known issues
-- The gameplay is intentionally small: two waves, no audio, no text rendering library.
-- The game status is displayed in the **window title**, not as an in-game HUD.
-- Enemy movement is individual rather than a synchronized Space Invaders fleet.
-- Assets are original placeholder BMP images included in this repository.
-- Builds require SDL2 to be installed separately; this repo does not bundle SDL2.
+- Designed as a small educational game, not a general-purpose engine.
+- Uses simple BMP graphics and basic collision detection.
+- No audio system or advanced physics.
 
-## Screenshots and verification
-Add a real screenshot or short GIF after running the game locally. Do not fabricate screenshots.
+## Project Status
 
-## Learning note
-This is a consolidated reference implementation. Before using it as portfolio evidence, read each class, build it locally, test all controls, and record the changes you personally make in genuine Git commits.
+Playable educational project. Core gameplay features have been tested on Windows.
+
+## What I Learned
+
+This project helped me practice object-oriented programming, smart pointers, resource ownership, SDL2 rendering, delta-time movement, collision detection, debugging, and organizing a C++ project with CMake.
 
 ## Gameplay Screenshot
 
