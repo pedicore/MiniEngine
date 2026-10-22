@@ -9,3 +9,7 @@
 *.ilk
 *.log
 .DS_Store
+build/
+build-*/
+.vscode/
+*.dll

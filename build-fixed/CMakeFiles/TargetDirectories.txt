@@ -1,3 +1,0 @@
-C:/Users/User/Desktop/Projects C++/MainProject/MiniEngine/build-fixed/CMakeFiles/MiniEngine.dir
-C:/Users/User/Desktop/Projects C++/MainProject/MiniEngine/build-fixed/CMakeFiles/edit_cache.dir
-C:/Users/User/Desktop/Projects C++/MainProject/MiniEngine/build-fixed/CMakeFiles/rebuild_cache.dir
